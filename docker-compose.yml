@@ -1,0 +1,35 @@
+version: '2'
+services:
+  influx_everything:
+    env_file: "./.env"
+    restart: unless-stopped
+    build: ./influx-everything
+    # For local development:
+    # build:
+    #   context: ../influx-everything
+    #   dockerfile: Dockerfile
+  influxdb:
+    image: influxdb:latest
+    restart: unless-stopped
+    ports:
+      - '8086:8086'
+    volumes:
+      - type: volume
+        source: influxdb2-data
+        target: /var/lib/influxdb2
+      - type: volume
+        source: influxdb2-config
+        target: /etc/influxdb2
+  grafana:
+    image: grafana/grafana:latest
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    depends_on:
+      - influxdb
+volumes:
+  influxdb2-data:
+  influxdb2-config:
+  grafana-storage:

@@ -1,0 +1,3 @@
+[submodule "influx-everything"]
+	path = influx-everything
+	url = https://github.com/SJTU-Geek/influx-everything
