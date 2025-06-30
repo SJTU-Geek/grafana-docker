@@ -8,6 +8,8 @@ services:
     # build:
     #   context: ../influx-everything
     #   dockerfile: Dockerfile
+    depends_on:
+      - influxdb
   influxdb:
     image: influxdb:latest
     restart: unless-stopped
@@ -23,8 +25,9 @@ services:
   grafana:
     image: grafana/grafana:latest
     restart: unless-stopped
+    env_file: "./.env"
     ports:
-      - '3000:3000'
+      - '8087:3000'
     volumes:
       - grafana-storage:/var/lib/grafana
     depends_on:
